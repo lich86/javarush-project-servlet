@@ -42,12 +42,15 @@ public class LogicServlet extends HttpServlet {
         int emptyFieldIndex = field.getEmptyFieldIndex();
 
         if (emptyFieldIndex >= 0) {
-            field.getField().put(emptyFieldIndex, Sign.NOUGHT);
-        }
+            //Проверяем, могут ли крестики выиграть
+            Integer crossThreatWin = field.checkCrossThreatWin();
+            if(crossThreatWin != -1) {
+                field.getField().put(crossThreatWin, Sign.NOUGHT); //Устанавливаем нолик
+            } else {
+                field.getField().put(emptyFieldIndex, Sign.NOUGHT); //Устанавливаем нолик
+            }
 
-        if (emptyFieldIndex >= 0) {
-            field.getField().put(emptyFieldIndex, Sign.NOUGHT);
-            // Проверяем, не победил ли нолик после добавление последнего нолика
+            // Проверяем, не победил ли нолик после добавления последнего нолика
             if (checkWin(resp, currentSession, field)) {
                 return;
             }

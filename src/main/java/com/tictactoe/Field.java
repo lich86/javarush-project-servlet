@@ -59,4 +59,34 @@ public class Field {
         }
         return Sign.EMPTY;
     }
+
+    public Integer checkCrossThreatWin() {
+        List<List<Integer>> threatPossibilities = List.of(
+                List.of(0, 1, 2),
+                List.of(3, 4, 5),
+                List.of(6, 7, 8),
+                List.of(0, 3, 6),
+                List.of(1, 4, 7),
+                List.of(2, 5, 8),
+                List.of(0, 4, 8),
+                List.of(2, 4, 6)
+        );
+
+        for (List<Integer> threatPossibility : threatPossibilities) {
+            if (field.get(threatPossibility.get(0)) == Sign.CROSS &&
+                    field.get(threatPossibility.get(1)) == Sign.CROSS
+                    && field.get(threatPossibility.get(2)) == Sign.EMPTY) {
+                return threatPossibility.get(2);
+            } else if (field.get(threatPossibility.get(0)) == Sign.CROSS &&
+                    field.get(threatPossibility.get(1)) == Sign.EMPTY
+                    && field.get(threatPossibility.get(2)) == Sign.CROSS) {
+                return threatPossibility.get(1);
+            } else if (field.get(threatPossibility.get(0)) == Sign.EMPTY &&
+                    field.get(threatPossibility.get(1)) == Sign.CROSS
+                    && field.get(threatPossibility.get(2)) == Sign.CROSS) {
+                return threatPossibility.get(0);
+            }
+        }
+        return -1;
+    }
 }
