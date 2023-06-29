@@ -60,7 +60,7 @@ public class Field {
         return Sign.EMPTY;
     }
 
-    public Integer checkCrossThreatWin() {
+    public Integer checkSignThreatWin(Sign sign) {
         List<List<Integer>> threatPossibilities = List.of(
                 List.of(0, 1, 2),
                 List.of(3, 4, 5),
@@ -73,20 +73,21 @@ public class Field {
         );
 
         for (List<Integer> threatPossibility : threatPossibilities) {
-            if (field.get(threatPossibility.get(0)) == Sign.CROSS &&
-                    field.get(threatPossibility.get(1)) == Sign.CROSS
+            if (field.get(threatPossibility.get(0)) == sign &&
+                    field.get(threatPossibility.get(1)) == sign
                     && field.get(threatPossibility.get(2)) == Sign.EMPTY) {
                 return threatPossibility.get(2);
-            } else if (field.get(threatPossibility.get(0)) == Sign.CROSS &&
+            } else if (field.get(threatPossibility.get(0)) == sign &&
                     field.get(threatPossibility.get(1)) == Sign.EMPTY
-                    && field.get(threatPossibility.get(2)) == Sign.CROSS) {
+                    && field.get(threatPossibility.get(2)) == sign) {
                 return threatPossibility.get(1);
             } else if (field.get(threatPossibility.get(0)) == Sign.EMPTY &&
-                    field.get(threatPossibility.get(1)) == Sign.CROSS
-                    && field.get(threatPossibility.get(2)) == Sign.CROSS) {
+                    field.get(threatPossibility.get(1)) == sign
+                    && field.get(threatPossibility.get(2)) == sign) {
                 return threatPossibility.get(0);
             }
         }
         return -1;
     }
+
 }

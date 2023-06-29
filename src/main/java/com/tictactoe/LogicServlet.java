@@ -17,6 +17,11 @@ public class LogicServlet extends HttpServlet {
         // Получаем объект игрового поля из сессии
         Field field = extractField(currentSession);
 
+        //Если игра закончилась, нельзя добавить крестик на поле
+        if (checkWin(resp, currentSession, field)) {
+            return;
+        }
+
         // получаем индекс ячейки, по которой произошел клик
         int index = getSelectedIndex(req);
         Sign currentSign = field.getField().get(index);
@@ -42,12 +47,18 @@ public class LogicServlet extends HttpServlet {
         int emptyFieldIndex = field.getEmptyFieldIndex();
 
         if (emptyFieldIndex >= 0) {
-            //Проверяем, могут ли крестики выиграть
-            Integer crossThreatWin = field.checkCrossThreatWin();
-            if(crossThreatWin != -1) {
-                field.getField().put(crossThreatWin, Sign.NOUGHT); //Устанавливаем нолик
+
+            Integer noughtsThreatWin = field.checkSignThreatWin(Sign.NOUGHT); // Могут ли нолики выиграть
+            Integer crossThreatWin = field.checkSignThreatWin(Sign.CROSS); //Могут ли крестики выиграть
+
+            if (noughtsThreatWin != -1) {
+                field.getField().put(noughtsThreatWin, Sign.NOUGHT);
+            } else if(crossThreatWin != -1) {
+                field.getField().put(crossThreatWin, Sign.NOUGHT);
+            } else if (field.getField().get(4) == Sign.EMPTY) {
+                field.getField().put(4, Sign.NOUGHT);
             } else {
-                field.getField().put(emptyFieldIndex, Sign.NOUGHT); //Устанавливаем нолик
+                field.getField().put(emptyFieldIndex, Sign.NOUGHT);
             }
 
             // Проверяем, не победил ли нолик после добавления последнего нолика
