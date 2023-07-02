@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LogicServletTest extends Mockito {
 
+    @Spy
     Field field;
     @Mock
     HttpServletRequest requestMock;
@@ -29,12 +31,10 @@ class LogicServletTest extends Mockito {
     HttpServletResponse responseMock;
     @Mock
     HttpSession currentSessionMock;
-    @Mock
     AutoCloseable closeable;
 
     @BeforeEach
     void initServlet() {
-        field = spy(Field.class);
         closeable = MockitoAnnotations.openMocks(this);
         Mockito.when(requestMock.getSession()).thenReturn(currentSessionMock);
         Mockito.when(currentSessionMock.getAttribute("field")).thenReturn(field);
@@ -71,11 +71,11 @@ class LogicServletTest extends Mockito {
     }
 
     @Test
-    void doGet_Should_RedirectWhenCellIsNotEmpty() throws ServletException, IOException {
+    void doGet_Should_ForwardWhenCellIsNotEmpty() throws ServletException, IOException {
         RequestDispatcher dispatcherMock = mock(RequestDispatcher.class);
         ServletConfig configMock = mock(ServletConfig.class);
         ServletContext servletContextMock = mock(ServletContext.class);
-        LogicServlet logicServletSpy = Mockito.spy(new LogicServlet());
+        LogicServlet logicServletSpy = Mockito.spy(LogicServlet.class);
         logicServletSpy.init(configMock);
         Mockito.when(configMock.getServletContext()).thenReturn(servletContextMock);
         Mockito.when(logicServletSpy.getServletContext().getRequestDispatcher("/index.jsp"))
