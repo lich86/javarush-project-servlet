@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,13 +29,20 @@ class LogicServletTest extends Mockito {
     HttpServletResponse responseMock;
     @Mock
     HttpSession currentSessionMock;
+    @Mock
+    AutoCloseable closeable;
 
     @BeforeEach
     void initServlet() {
         field = spy(Field.class);
-        MockitoAnnotations.openMocks(this);
+        closeable = MockitoAnnotations.openMocks(this);
         Mockito.when(requestMock.getSession()).thenReturn(currentSessionMock);
         Mockito.when(currentSessionMock.getAttribute("field")).thenReturn(field);
+    }
+
+    @AfterEach
+    void closeService() throws Exception {
+        closeable.close();
     }
 
     @ParameterizedTest
