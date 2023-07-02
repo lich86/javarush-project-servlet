@@ -10,20 +10,20 @@ import java.util.List;
 @WebServlet(name = "LogicServlet", value = "/logic")
 public class LogicServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Получаем текущую сессию
-        HttpSession currentSession = req.getSession();
+        HttpSession currentSession = request.getSession();
 
         // Получаем объект игрового поля из сессии
         Field field = extractField(currentSession);
 
         //Если игра закончилась, нельзя добавить крестик на поле
-        if (checkWin(resp, currentSession, field)) {
+        if (checkWin(response, currentSession, field)) {
             return;
         }
 
         // получаем индекс ячейки, по которой произошел клик
-        int index = getSelectedIndex(req);
+        int index = getSelectedIndex(request);
         Sign currentSign = field.getField().get(index);
 
         // Проверяем, что ячейка, по которой был клик пустая.
@@ -31,7 +31,7 @@ public class LogicServlet extends HttpServlet {
         // параметров в сессии
         if (Sign.EMPTY != currentSign) {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-            dispatcher.forward(req, resp);
+            dispatcher.forward(request, response);
             return;
         }
 
@@ -39,7 +39,7 @@ public class LogicServlet extends HttpServlet {
         field.getField().put(index, Sign.CROSS);
 
         // Проверяем, не победил ли крестик после добавления последнего клика пользователя
-        if (checkWin(resp, currentSession, field)) {
+        if (checkWin(response, currentSession, field)) {
             return;
         }
 
@@ -62,7 +62,7 @@ public class LogicServlet extends HttpServlet {
             }
 
             // Проверяем, не победил ли нолик после добавления последнего нолика
-            if (checkWin(resp, currentSession, field)) {
+            if (checkWin(response, currentSession, field)) {
                 return;
             }
         } else {
@@ -76,7 +76,7 @@ public class LogicServlet extends HttpServlet {
             currentSession.setAttribute("data", data);
 
             // Шлем редирект
-            resp.sendRedirect("/index.jsp");
+            response.sendRedirect("/index.jsp");
             return;
         }
 
@@ -87,7 +87,7 @@ public class LogicServlet extends HttpServlet {
         currentSession.setAttribute("data", data);
         currentSession.setAttribute("field", field);
 
-        resp.sendRedirect("/index.jsp");
+        response.sendRedirect("/index.jsp");
     }
 
 
