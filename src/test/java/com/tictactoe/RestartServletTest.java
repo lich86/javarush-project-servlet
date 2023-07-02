@@ -1,8 +1,5 @@
 package com.tictactoe;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,7 +14,6 @@ import org.mockito.Spy;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class RestartServletTest extends Mockito {
     @Mock
@@ -32,7 +28,7 @@ class RestartServletTest extends Mockito {
     AutoCloseable closeable;
 
     @BeforeEach
-    void initServlet() throws ServletException {
+    void initServlet() {
         closeable = MockitoAnnotations.openMocks(this);
         Mockito.when(requestMock.getSession()).thenReturn(currentSessionMock);
     }
@@ -50,7 +46,7 @@ class RestartServletTest extends Mockito {
     }
 
     @Test
-    void doPost_Should_RedirectToStartJsp() throws IOException, ServletException {
+    void doPost_Should_RedirectToStartJsp() throws IOException {
         restartServlet.doPost(requestMock, responseMock);
 
         Mockito.verify(responseMock).sendRedirect("/start");

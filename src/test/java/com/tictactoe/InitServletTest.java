@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class InitServletTest extends Mockito{
     @Mock
     HttpServletRequest requestMock;
