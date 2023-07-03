@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>Tic-Tac-Toe</title>
-    <link href="static/main.css" rel="stylesheet">
+    <link href="static/main.css?${startup.time}" rel="stylesheet">
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <script src="<c:url value="/static/jquery-3.6.0.min.js"/>"></script>
 </head>
@@ -46,7 +46,7 @@
 <br>
 <br>
 <%--Всегда можно начать с начала--%>
-<button onclick="restart()">Start again</button>
+<button class="button" onclick="restart()">Start again</button>
 <script>
 
     function restart() {
@@ -60,6 +60,9 @@
             }
         });
     }
+
+    $('td:contains("X")').css("backgroundColor", "red");
+    $('td:contains("0")').css("backgroundColor", "green");
 
 </script>
 
