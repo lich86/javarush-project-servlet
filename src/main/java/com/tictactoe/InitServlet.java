@@ -6,7 +6,6 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @WebServlet(name = "InitServlet", value = "/start")
 public class InitServlet extends HttpServlet {
@@ -16,7 +15,6 @@ public class InitServlet extends HttpServlet {
 
         // Создание игрового поля
         Field field = new Field();
-        Map<Integer, Sign> fieldData = field.getField();
 
         // Получение списка значений поля
         List<Sign> data = field.getFieldData();
