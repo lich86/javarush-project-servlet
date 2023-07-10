@@ -9,9 +9,9 @@ import java.util.List;
 
 @WebServlet(name = "InitServlet", value = "/start")
 public class InitServlet extends HttpServlet {
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Создание новой сессии
-        HttpSession currentSession = req.getSession(true);
+        HttpSession currentSession = request.getSession(true);
 
         // Создание игрового поля
         Field field = new Field();
@@ -25,6 +25,6 @@ public class InitServlet extends HttpServlet {
         currentSession.setAttribute("data", data);
 
         // Перенаправление запроса на страницу index.jsp через сервер
-        getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
+        getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
     }
 }
